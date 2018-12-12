@@ -1,0 +1,3 @@
+[submodule "segmentation/PyTorch-Encoding"]
+	path = segmentation/PyTorch-Encoding
+	url = https://github.com/wenqingchu/PyTorch-Encoding.git
