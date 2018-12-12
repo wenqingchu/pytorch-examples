@@ -37,7 +37,7 @@ def adjust_learning_rate(optimizer, epoch, model_type):
 
 
 parser = argparse.ArgumentParser(description='PyTorch Cifar10 Training')
-parser.add_argument('--epochs', default=200, type=int, metavar='N', help='number of total epochs to run')
+parser.add_argument('--epochs', default=300, type=int, metavar='N', help='number of total epochs to run')
 parser.add_argument('-b', '--batch-size', default=128, type=int, metavar='N', help='mini-batch size (default: 128),only used for train')
 parser.add_argument('--lr', '--learning-rate', default=0.1, type=float, metavar='LR', help='initial learning rate')
 parser.add_argument('--momentum', default=0.9, type=float, metavar='M', help='momentum')
@@ -47,11 +47,17 @@ args = parser.parse_args()
 
 # prepare data
 root = '/home/chuwenqing/.torch/datasets/'
-input_transform = transforms.Compose([
+train_transform = transforms.Compose([
+    transforms.RandomCrop(32, padding=4),
+    transforms.RandomHorizontalFlip(),
     transforms.ToTensor(),
     transforms.Normalize([.485, .456, .406], [.229, .224, .225])])
-trainset = torchvision.datasets.CIFAR10(root, train=True, transform=input_transform, download=True)
-testset = torchvision.datasets.CIFAR10(root, train=False, transform=input_transform, download=True)
+trainset = torchvision.datasets.CIFAR10(root, train=True, transform=train_transform, download=True)
+
+test_transform = transforms.Compose([
+    transforms.ToTensor(),
+    transforms.Normalize([.485, .456, .406], [.229, .224, .225])])
+testset = torchvision.datasets.CIFAR10(root, train=False, transform=test_transform, download=True)
 
 trainloader = torch.utils.data.DataLoader(trainset, batch_size=args.batch_size, shuffle=True, num_workers = 4)
 
